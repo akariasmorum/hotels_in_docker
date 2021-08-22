@@ -12,16 +12,16 @@ def hotel(request):
         city_id = request.GET.get('city_id')
         from_id = request.GET.get('from_id')
         limit = request.GET.get('limit')
-        hotels_objects = filter_hotels(city_id, limit, from_id)
-
-        
-        hotels_json = serializers.serialize("json", hotels_objects)
-        data = {"data": hotels_json}
+        hotels_objects = filter_hotels(city_id, limit, from_id)        
+        data = serializers.serialize("json", hotels_objects)
         return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
 
 
-def filter_hotels(city_id=None, limit=None, from_id=0):
-    hotels_objects = Hotel.objects.filter(id__gte=from_id)
+def filter_hotels(city_id=None, limit=None, from_id=None):
+    hotels_objects = Hotel.objects.all()
+
+    if from_id:
+        hotels_objects = Hotel.objects.filter(id__gt=from_id)
 
     if city_id:
         hotels_objects = hotels_objects.filter(city=city_id)
