@@ -5,22 +5,28 @@ from django.contrib.auth.decorators import login_required
 from hotels.models import Hotel 
 from django.core import serializers
 
+
 @login_required
 def hotel(request):
     if request.method == 'GET':  
-        if 'city_id' in request.GET:
-            hotels_objects = Hotel.objects.filter(city=request.GET['city_id'])
-        else:        
-            hotels_objects =  Hotel.objects.all()
-            hotels_objects = hotels_objects.order_by('pk')
-
-        if 'from_id' in request.GET:
-            hotels_objects = hotels_objects.filter(id__gte=request.GET['from_id'])
-
-        if 'limit' in request.GET:
-            hotels_objects = hotels_objects[:int(request.GET['limit'])]
+        city_id = request.GET.get('city_id')
+        from_id = request.GET.get('from_id')
+        limit = request.GET.get('limit')
+        hotels_objects = filter_hotels(city_id, limit, from_id)
 
         
         hotels_json = serializers.serialize("json", hotels_objects)
         data = {"data": hotels_json}
         return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
+
+
+def filter_hotels(city_id=None, limit=None, from_id=0):
+    hotels_objects = Hotel.objects.filter(id__gte=from_id)
+
+    if city_id:
+        hotels_objects = hotels_objects.filter(city=city_id)
+
+    if limit:
+        hotels_objects = hotels_objects[:int(limit)]
+    
+    return hotels_objects
