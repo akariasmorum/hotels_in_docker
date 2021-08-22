@@ -6,7 +6,7 @@ cd hotels_in_docker
 docker-compose up
 
 localhost:8001/
-Логинимся
+Регистрируемся, Логинимся
 
 localhost:8001/admin/ 
 логин:  user 
