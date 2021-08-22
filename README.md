@@ -15,5 +15,8 @@
 - localhost:8001/api/hotels/
 - localhost:8001/api/hotels/?city_id=1
 - localhost:8001/api/hotels/?city_id=1&from_id=2
-- localhost:8001/api/hotels/?city_id=1&from_id=2&limit=2
 - localhost:8001/api/hotels/?city_id=1&limit=3
+- localhost:8001/api/hotels/?city_id=1&from_id=2&limit=2
+- localhost:8001/api/hotels/?from_id=2
+- localhost:8001/api/hotels/?from_id=2&limit=2
+- localhost:8001/api/hotels/?limit=2
