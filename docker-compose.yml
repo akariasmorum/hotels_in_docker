@@ -1,4 +1,4 @@
-version: "3"
+version: '2.1'
 
 services:
   app:
@@ -11,8 +11,7 @@ services:
       - DB_PASS=kabul
       - DB_PORT=5433
     depends_on:
-      - db:
-          condition: service_healthy
+      - db
     ports:
       - "8001:8001"
     volumes:
@@ -31,6 +30,11 @@ services:
     volumes:
       - ./data:/var/lib/postgresql/data
     command: -p 5433
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   data:
